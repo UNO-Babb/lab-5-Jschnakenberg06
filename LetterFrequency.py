@@ -12,41 +12,31 @@ def countLetters(message):
     alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     message = message.upper()
 
-    freq = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    freq = [0] * 26 
 
-    #loop through each letter
-    #Find the position in the alphabet
-    #Increase the frequency at that position. If position was 5, then frequencies[5] = frequencies[5] + 1
-
-
-
-    #Create the output text in the format A,5\n if there were 5 letter A in the message.
-    #Remember that the \n is the symbol for a new line.
-
-    output = ""
+    for letter in message:
+        if letter in alpha:
+            index = alpha.index(letter)
+            freq[index] += 1
+    
+    output_lines = ["Letter,Count"]
     for i in range(26):
-        print (alpha[i], ":", freq[i])
-        line = alpha[i] + "," + str(freq[i]) + "\n"
-        output = output + line
+        print(alpha[i], ":", freq[i])
+        output_lines.append(f"{alpha[i]},{freq[i]}")
 
-    writeToFile(output)
-
+    writeToFile("\n".join(output_lines))
 
 def writeToFile(fileText):
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    os.chdir(dir_path)
+    file_name = "letter_frequencies.csv"
 
-    freqFile = open("frq.csv", 'w')
-    freqFile.write(fileText)
-
-    freqFile.close()
-
+    with open(file_name, 'w') as freqFile:
+        freqFile.write(fileText)
+    
+    print("Letter frequencies saved to:", file_name)
 
 def main():
     msg = input("Enter a message: ")
     countLetters(msg)
 
-
-
 if __name__ == '__main__':
-  main()
+    main()
